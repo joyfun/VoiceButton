@@ -1,6 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -13,6 +12,9 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
+    buildFeatures {
+        viewBinding true
+    }
 
 }
 
@@ -21,11 +23,12 @@ dependencies {
     compileOnly "org.jetbrains.kotlin:kotlin-stdlib:$rootProject.ext.kotlin_version"
     compileOnly "androidx.core:core-ktx:$rootProject.ext.core_ktx"
     compileOnly "androidx.appcompat:appcompat:$rootProject.ext.appcompat"
+    implementation "androidx.annotation:annotation:1.3.0"
 
     testImplementation "junit:junit:$rootProject.ext.junit"
     androidTestImplementation "androidx.test.ext:junit:$rootProject.ext.test_ext"
     androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.ext.espresso_core"
     // debugImplementation because LeakCanary should only run in debug builds.
-    debugImplementation "com.squareup.leakcanary:leakcanary-android:$rootProject.ext.leakcanary"
+//    debugImplementation "com.squareup.leakcanary:leakcanary-android:$rootProject.ext.leakcanary"
 }
-apply from: 'j-build.gradle'
+//apply from: 'j-build.gradle'

@@ -59,6 +59,9 @@ class MainActivity : AppCompatActivity() {
     private fun initView() {
         vbRecord = findViewById(R.id.vb_record)
         vbRecord.setMaxRecordLength(20 * 1000)
+        vbRecord.setFmt("pcm")
+        val sampleRate=16000
+        vbRecord.setSampleRate(sampleRate)
         vbRecord.setRecorderListener(object : RecorderListener {
             override fun onStart() {
                 Log.d(TAG, "开始（触发）本次录音，可能会因为录音时间太短取消本次录音")
@@ -68,7 +71,7 @@ class MainActivity : AppCompatActivity() {
                 time: Long,
                 filePath: String?
             ) {
-                Log.d(TAG, "完成了本次录音")
+                Log.d(TAG, "完成了本次录音"+filePath)
                 recoderAdapter!!.addData(RecorderInfo(time, filePath!!))
             }
         })
@@ -99,7 +102,7 @@ class MainActivity : AppCompatActivity() {
                         recoderAdapter!!.getItem(position).filePath,
                         OnCompletionListener { //播放完成后修改图片
                             voiceAnim?.setBackgroundResource(R.drawable.voice)
-                        })
+                        },sampleRate)
                     lastPlayedPosition = position
                 }
             }

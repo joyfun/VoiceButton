@@ -44,6 +44,16 @@ class VoiceButton @JvmOverloads constructor(
             it.maxRecordLength = time
         }
     }
+    fun setFmt(fmt: String) {
+        recordManager?.let {
+            it.fmt = fmt
+        }
+    }
+    fun setSampleRate(sr: Int) {
+        recordManager?.let {
+            it.sampleRate = sr
+        }
+    }
 
     //采样间隔时间
     private val samplingInterval: Long = 200
