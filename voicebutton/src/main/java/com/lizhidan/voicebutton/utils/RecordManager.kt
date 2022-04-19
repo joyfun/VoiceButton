@@ -118,21 +118,23 @@ class RecordManager(
                         if (fileOutputStream != null) {
                             while (isPrepared) {
                                 val readStatus: Int = audioRecorder!!.read(buffer, 0, bufferSize)
-
-                                var v = 0
-                                // 将 buffer 内容取出，进行平方和运算
-                                // 将 buffer 内容取出，进行平方和运算
-                                for (i in 0 until buffer.size) {
-                                    // 这里没有做运算的优化，为了更加清晰的展示代码
-                                    v += buffer[i] * buffer[i]
+                                if(readStatus>0) {
+                                    var v = 0
+                                    // 将 buffer 内容取出，进行平方和运算
+                                    // 将 buffer 内容取出，进行平方和运算
+                                    for (i in 0 until buffer.size) {
+                                        // 这里没有做运算的优化，为了更加清晰的展示代码
+                                        v += buffer[i] * buffer[i]
+                                    }
+                                    // 平方和除以数据总长度，得到音量大小。可以获取白噪声值，然后对实际采样进行标准化。
+                                    // 如果想利用这个数值进行操作，建议用 sendMessage 将其抛出，在 Handler 里进行处理。
+                                    // 平方和除以数据总长度，得到音量大小。可以获取白噪声值，然后对实际采样进行标准化。
+                                    // 如果想利用这个数值进行操作，建议用 sendMessage 将其抛出，在 Handler 里进行处理。
+                                    Db =
+                                        (20 * Math.log10(v / readStatus.toDouble() / volumeBase)).toInt()
+                                    Log.d("RecordManager", "run: readStatus=$readStatus DB:$Db")
+                                    fileOutputStream.write(buffer)
                                 }
-                                // 平方和除以数据总长度，得到音量大小。可以获取白噪声值，然后对实际采样进行标准化。
-                                // 如果想利用这个数值进行操作，建议用 sendMessage 将其抛出，在 Handler 里进行处理。
-                                // 平方和除以数据总长度，得到音量大小。可以获取白噪声值，然后对实际采样进行标准化。
-                                // 如果想利用这个数值进行操作，建议用 sendMessage 将其抛出，在 Handler 里进行处理。
-                                Db = (20 * Math.log10(v / readStatus.toDouble()/volumeBase)).toInt()
-                                Log.d("RecordManager", "run: readStatus=$readStatus DB:$Db")
-                                fileOutputStream.write(buffer)
                             }
                         }
                     } catch (e: IOException) {
